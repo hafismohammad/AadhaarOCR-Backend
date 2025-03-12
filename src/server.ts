@@ -11,6 +11,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 const corsOptions = {
   origin: [
     'https://aadhaar-ocr-theta.vercel.app',
+    'https://aadhaar-llh0du93e-hafis-mohammads-projects.vercel.app',
     'http://localhost:5173',
     'http://localhost:5174'
         ], 
