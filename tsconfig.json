@@ -1,8 +1,22 @@
-{
-    "compilerOptions": {
-      "module": "NodeNext",
-      "moduleResolution": "NodeNext",
-      "esModuleInterop": true
-    }
-  }
+// {
+//     "compilerOptions": {
+//       "module": "NodeNext",
+//       "moduleResolution": "NodeNext",
+//       "esModuleInterop": true
+//     }
+//   }
   
+
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
