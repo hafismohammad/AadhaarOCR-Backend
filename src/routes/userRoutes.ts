@@ -17,7 +17,7 @@ route.post(
     }
     next();
   },
-  userControllerInstance.ParseAdhaarData.bind(userControllerInstance) 
+  userControllerInstance.ParseAdhaarData
 );
 
 export default route;
