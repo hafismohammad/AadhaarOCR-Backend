@@ -1,5 +1,4 @@
 import { Request, Response, RequestHandler } from "express";
-import { StatusCode } from "../enum/statusCode";
 import { UserService } from "../services/userService";
 
 const userService = new UserService();
@@ -10,7 +9,7 @@ interface MulterRequest extends Request {
 }
 
 export class UserController { 
-  ParseAdhaarData: RequestHandler = async (req, res) => {
+  ParseAdhaarData: RequestHandler = async (req, res): Promise<void> => {
     try {
       const multerReq = req as MulterRequest;
 
@@ -18,20 +17,29 @@ export class UserController {
       const backImage = multerReq.files?.["backImage"]?.[0];
 
       if (!frontImage || !backImage) {
-        res.status(StatusCode.BAD_REQUEST).json({
+        res.status(400).json({
           message: "Front and back images are required.",
         });
         return;
       }
 
       const extractedData = await userService.parseAadharData(frontImage, backImage);
-      res.status(StatusCode.OK).json(extractedData); 
+
+      res.status(200).json(extractedData);
     } catch (error: any) {
-      console.error("Error while parsing data:", error);
-      res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
-        message: "An error occurred while parsing data",
-        error: error.message,
-      });
+
+      if (error.message === "Uploaded aadhaar images") {
+        res.status(400).json({
+          message: "Uploaded Aadhaar images are not valid",
+        });
+        return;
+      }
+
+      // You can uncomment this to handle other errors
+      // res.status(500).json({
+      //   message: "An error occurred while parsing data",
+      //   error: error.message,
+      // });
     }
   };
 }

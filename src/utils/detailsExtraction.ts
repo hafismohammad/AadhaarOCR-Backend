@@ -2,8 +2,7 @@ const extractAadharDetails = (
   front: { aadharNumber?: string | null; rawText: string; name?: string | null }, 
   back: { rawText: string }
 ) => {
-  console.log('dd');
-  
+    
     const details = {
         aadharNumber: front.aadharNumber ?? null, 
         name: extractName(front.rawText, front.name ?? null),
@@ -32,11 +31,17 @@ const extractGender = (rawText: string): string | null => {
 };
 
 const extractAddress = (rawText: string): string | null => {
-    const addressRegex = /Address[:\s]+([\w\s,]+)/i;
+    
+    const addressRegex = /(S\/O|W\/O|D\/O|C\/O)[\s\S]{0,100}?(\d{6})/i;
     const match = rawText.match(addressRegex);
-
-    return match ? match[1].trim() : null;
-};
+  
+    if (match) {
+      return match[0].replace(/\s+/g, " ").trim(); // Normalize whitespace
+    }
+  
+    return null;
+  };
+  
 
 const extractPin = (rawText: string): string | null => {
     const pinMatch = rawText.match(/\b\d{6}\b/);

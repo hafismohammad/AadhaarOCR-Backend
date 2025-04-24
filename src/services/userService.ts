@@ -11,9 +11,19 @@ export class UserService {
     const frontOCR = await this.performOCR(frontImage.buffer);
     const backOCR = await this.performOCR(backImage.buffer);
 
+    const combinedText = `${frontOCR.rawText} ${backOCR.rawText}`;
+    
     const extractedData: any = extractAadharDetails(frontOCR, backOCR);
     
+    // console.log('***combinedText', combinedText);
     extractedData.age = this.calculateAge(extractedData.dob);
+
+    const isValid = this.isValidAadharText(combinedText);
+    if (!isValid) {
+      throw new Error("Uploaded aadhaar images");
+    }
+      // console.log('extractedData',extractedData);
+
 
     return extractedData;
   }
@@ -21,6 +31,8 @@ export class UserService {
   async performOCR(imageBuffer: Buffer): Promise<{ aadharNumber: string | null; name: string | null; rawText: string }> {
     try {
       const { data: { text } } = await Tesseract.recognize(imageBuffer, "eng");
+      
+      
       return this.cleanOCRText(text);
     } catch (error) {
       console.error("Error during OCR processing:", error);
@@ -64,5 +76,23 @@ export class UserService {
     }
 
     return age;
+  }
+
+  isValidAadharText(text: string): boolean {
+    const keywords = [
+      "government of india",
+      "unique identification authority",
+      "uidai",
+      "aadhaar",
+      'www.uidai.gov.com',
+      "year of birth",
+      "dob",
+      "male",
+      "female",
+      "address",
+    ];
+
+    const lowercaseText = text.toLowerCase();
+    return keywords.some(keyword => lowercaseText.includes(keyword));
   }
 }
