@@ -13,5 +13,5 @@ route.post("/parseData", imageUpload_1.upload.fields([
         return res.status(400).json({ message: err.message });
     }
     next();
-}, userControllerInstance.ParseAdhaarData.bind(userControllerInstance));
+}, userControllerInstance.ParseAdhaarData);
 exports.default = route;

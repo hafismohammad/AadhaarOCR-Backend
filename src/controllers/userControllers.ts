@@ -24,9 +24,11 @@ export class UserController {
       }
 
       const extractedData = await userService.parseAadharData(frontImage, backImage);
+      console.log('extractedData',extractedData);
 
       res.status(200).json(extractedData);
     } catch (error: any) {
+console.log('error',error);
 
       if (error.message === "Uploaded aadhaar images") {
         res.status(400).json({

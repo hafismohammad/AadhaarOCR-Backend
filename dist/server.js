@@ -12,12 +12,16 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json({ limit: '10mb' }));
 app.use(express_1.default.urlencoded({ limit: '10mb', extended: true }));
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: [
+        'https://aadhaar-llh0du93e-hafis-mohammads-projects.vercel.app',
+        'http://localhost:5173'
+    ],
     credentials: true,
 };
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4002;
 app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
+console.log('hit');
 app.use('/', userRoutes_1.default);
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${process.env.PORT}`);

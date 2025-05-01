@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const extractAadharDetails = (front, back) => {
+    var _a, _b;
     const details = {
-        aadharNumber: front.aadharNumber || back.aadharNumber || null,
-        name: extractName(front.rawText, front.name),
+        aadharNumber: (_a = front.aadharNumber) !== null && _a !== void 0 ? _a : null,
+        name: extractName(front.rawText, (_b = front.name) !== null && _b !== void 0 ? _b : null),
         dob: extractDOB(front.rawText),
         gender: extractGender(front.rawText),
         address: extractAddress(back.rawText),
@@ -26,12 +27,10 @@ const extractGender = (rawText) => {
     return genderMatch ? genderMatch[1] : null;
 };
 const extractAddress = (rawText) => {
-    const addressRegex = /Addresss\/[^\w]*(\w[\w\s]+).*?wa:\s([^,]+,[^,]+)/;
+    const addressRegex = /(S\/O|W\/O|D\/O|C\/O)[\s\S]{0,100}?(\d{6})/i;
     const match = rawText.match(addressRegex);
     if (match) {
-        const name = match[1].trim();
-        const location = match[2].trim();
-        return `${name}, ${location}`;
+        return match[0].replace(/\s+/g, " ").trim(); // Normalize whitespace
     }
     return null;
 };

@@ -22,7 +22,6 @@ export class UserService {
     if (!isValid) {
       throw new Error("Uploaded aadhaar images");
     }
-      // console.log('extractedData',extractedData);
 
 
     return extractedData;
