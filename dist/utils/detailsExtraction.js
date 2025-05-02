@@ -10,16 +10,16 @@ const extractAadharDetails = (front, back) => {
         address: extractAddress(back.rawText),
         pin: extractPin(back.rawText)
     };
-    console.log('hit 1', details);
-    
+    console.log('detilas', details);
     return details;
 };
-const extractName = (rawText, name) => {
+function extractName(rawText, name) {
+    console.log("rawText before matching:", rawText);
     if (name)
         return name;
     const nameMatch = rawText.match(/Name:\s?([A-Za-z\s]+)/);
     return nameMatch ? nameMatch[1].trim() : null;
-};
+}
 const extractDOB = (rawText) => {
     const dobMatch = rawText.match(/DOB[:\s~]*(\d{2}\/\d{2}\/\d{4})/);
     return dobMatch ? dobMatch[1] : null;
@@ -29,12 +29,18 @@ const extractGender = (rawText) => {
     return genderMatch ? genderMatch[1] : null;
 };
 const extractAddress = (rawText) => {
-    console.log('hit adress', rawText);
-    
-    const addressRegex = /(S\/O|W\/O|D\/O|C\/O)[\s\S]{0,100}?(\d{6})/i;
-    const match = rawText.match(addressRegex);
-    if (match) {
-        return match[0].replace(/\s+/g, " ").trim(); // Normalize whitespace
+    console.log('rawText address', rawText);
+    // Look for "Address" or "S/O:" and capture from there until a likely ending (PIN or long uppercase string)
+    const addressMatch = rawText.match(/(?:Address|S\/O:|D\/O:|C\/O:)[\s:]*([\s\S]{30,300}?)\s+\d{6}\b/);
+    if (addressMatch) {
+        let address = addressMatch[1];
+        // Clean up OCR artifacts
+        address = address
+            .replace(/[^a-zA-Z0-9,\/\-#\.\s]/g, '') // remove garbage characters
+            .replace(/\s{2,}/g, ' ') // multiple spaces to single
+            .replace(/\b(?:S\/O|D\/O|C\/O)\b/g, '') // remove repeated S/O, etc
+            .trim();
+        return address;
     }
     return null;
 };

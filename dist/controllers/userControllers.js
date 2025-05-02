@@ -27,7 +27,7 @@ class UserController {
                     return;
                 }
                 const extractedData = yield userService.parseAadharData(frontImage, backImage);
-                console.log('extractedData123', extractedData);
+                // console.log('extractedData',extractedData);
                 res.status(200).json(extractedData);
             }
             catch (error) {
