@@ -30,17 +30,22 @@ const extractGender = (rawText: string): string | null => {
     return genderMatch ? genderMatch[1] : null;
 };
 
-const extractAddress = (rawText: string): string | null => {
-    
-    const addressRegex = /(S\/O|W\/O|D\/O|C\/O)[\s\S]{0,100}?(\d{6})/i;
+function extractAddress(rawText:any) {
+
+    const addressRegex = /Addresss\/[^\w]*(\w[\w\s]+).*?wa:\s([^,]+,[^,]+)/;
     const match = rawText.match(addressRegex);
   
+  
+   
+  
     if (match) {
-      return match[0].replace(/\s+/g, " ").trim(); // Normalize whitespace
+      const name = match[1].trim(); 
+      const location = match[2].trim(); 
+      return `${name}, ${location}`;
     }
   
-    return null;
-  };
+    return null; 
+  }
   
 
 const extractPin = (rawText: string): string | null => {

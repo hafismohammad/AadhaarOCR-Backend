@@ -24,7 +24,7 @@ export class UserController {
       }
 
       const extractedData = await userService.parseAadharData(frontImage, backImage);
-      console.log('extractedData',extractedData);
+      // console.log('extractedData',extractedData);
 
       res.status(200).json(extractedData);
     } catch (error: any) {

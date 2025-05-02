@@ -10,6 +10,8 @@ const extractAadharDetails = (front, back) => {
         address: extractAddress(back.rawText),
         pin: extractPin(back.rawText)
     };
+    console.log('hit 1', details);
+    
     return details;
 };
 const extractName = (rawText, name) => {
@@ -27,6 +29,8 @@ const extractGender = (rawText) => {
     return genderMatch ? genderMatch[1] : null;
 };
 const extractAddress = (rawText) => {
+    console.log('hit adress', rawText);
+    
     const addressRegex = /(S\/O|W\/O|D\/O|C\/O)[\s\S]{0,100}?(\d{6})/i;
     const match = rawText.match(addressRegex);
     if (match) {
